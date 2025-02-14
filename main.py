@@ -39,6 +39,8 @@ async def main():
         # Load additional extensions (cogs)
         await bot.load_extension("commands.owner_commands")
         logger.info("Loaded owner_commands extension successfully.")
+        await bot.load_extension("commands.admin_commands")
+        logger.info("Loaded admin_commands extension successfully.")
     except Exception as e:
         logger.error(f"Failed to load extension: {e}")
         raise
