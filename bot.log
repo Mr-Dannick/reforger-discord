@@ -128,3 +128,263 @@ AttributeError: module 'subprocess' has no attribute 'create_subprocess_shell'
 2025-02-14 15:33:40,588 - INFO - Starting bot...
 2025-02-14 15:33:41,644 - INFO - Slash commands synced with Discord.
 2025-02-14 15:33:44,131 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 15:55:55,769 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 15:55:55,770 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 15:55:55,780 - ERROR - Failed to load extension: Extension 'battlemetrics' raised an error: TypeError: object NoneType can't be used in 'await' expression
+2025-02-14 16:00:27,027 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:00:27,027 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:00:27,030 - ERROR - Error loading previous bans: Expecting value: line 1 column 1 (char 0)
+2025-02-14 16:00:27,030 - INFO - BattleMetrics cog loaded
+2025-02-14 16:00:27,030 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:00:27,030 - INFO - Starting bot...
+2025-02-14 16:00:28,047 - INFO - Slash commands synced with Discord.
+2025-02-14 16:00:30,424 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:00:30,788 - ERROR - BattleMetrics API error: 405
+2025-02-14 16:04:05,903 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:04:05,904 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:04:05,906 - ERROR - Failed to load extension: Extension 'battlemetrics' raised an error: AttributeError: 'BattleMetrics' object has no attribute 'load_config'
+2025-02-14 16:04:56,677 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:04:56,678 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:04:56,680 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:04:56,680 - INFO - Starting bot...
+2025-02-14 16:04:57,705 - INFO - Slash commands synced with Discord.
+2025-02-14 16:05:00,370 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:05:15,632 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:05:15,632 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:05:15,633 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:05:15,633 - INFO - Starting bot...
+2025-02-14 16:05:58,735 - INFO - Slash commands synced with Discord.
+2025-02-14 16:06:01,097 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:08:26,800 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:08:26,801 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:08:26,803 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:08:26,803 - INFO - Starting bot...
+2025-02-14 16:08:27,614 - INFO - Slash commands synced with Discord.
+2025-02-14 16:08:29,931 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:11:07,979 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:11:07,980 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:11:07,982 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:11:07,983 - INFO - Starting bot...
+2025-02-14 16:11:08,820 - INFO - Slash commands synced with Discord.
+2025-02-14 16:11:11,214 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:11:44,585 - INFO - BattleMetrics configuration updated successfully
+2025-02-14 16:12:19,587 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:12:19,588 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:12:19,589 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:12:19,589 - INFO - Starting bot...
+2025-02-14 16:12:20,623 - INFO - Slash commands synced with Discord.
+2025-02-14 16:12:22,959 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:15:25,674 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:15:25,675 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:15:25,678 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:15:25,678 - INFO - Starting bot...
+2025-02-14 16:15:26,639 - INFO - Slash commands synced with Discord.
+2025-02-14 16:15:29,123 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:15:29,313 - ERROR - BattleMetrics API error: 401
+2025-02-14 16:15:43,881 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:15:43,882 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:15:43,885 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:15:43,885 - INFO - Starting bot...
+2025-02-14 16:16:09,022 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:16:09,023 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:16:09,024 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:16:09,024 - INFO - Starting bot...
+2025-02-14 16:19:03,416 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:19:03,416 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:19:03,420 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:19:03,420 - ERROR - Failed to load BattleMetrics extension: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+2025-02-14 16:19:03,421 - ERROR - Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 333, in setup
+    await bot.add_cog(BattleMetrics(bot))
+                      ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 18, in __init__
+    self.ban_check_task = self.bot.loop.create_task(self.start_ban_check_loop())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\discord\client.py", line 145, in __getattr__
+    raise AttributeError(msg)
+AttributeError: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+
+2025-02-14 16:19:03,421 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:19:03,421 - INFO - Starting bot...
+2025-02-14 16:19:04,341 - INFO - Slash commands synced with Discord.
+2025-02-14 16:19:06,826 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:21:12,464 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:21:12,465 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:21:12,468 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:21:12,468 - ERROR - Failed to load BattleMetrics extension: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+2025-02-14 16:21:12,469 - ERROR - Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 221, in setup
+    await bot.add_cog(BattleMetrics(bot))
+                      ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 18, in __init__
+    self.ban_check_task = self.bot.loop.create_task(self.start_ban_check_loop())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\discord\client.py", line 145, in __getattr__
+    raise AttributeError(msg)
+AttributeError: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+
+2025-02-14 16:21:12,469 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:21:12,469 - INFO - Starting bot...
+2025-02-14 16:21:13,235 - INFO - Slash commands synced with Discord.
+2025-02-14 16:21:15,583 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:21:30,579 - INFO - Attempting to restart service: test
+2025-02-14 16:21:30,579 - ERROR - An error occurred while handling the /restart command
+Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\commands\admin_commands.py", line 50, in restart
+    process = await subprocess.create_subprocess_shell(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'subprocess' has no attribute 'create_subprocess_shell'
+2025-02-14 16:23:27,019 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:23:27,020 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:23:27,023 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:23:27,023 - ERROR - Failed to load BattleMetrics extension: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+2025-02-14 16:23:27,024 - ERROR - Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 255, in setup
+    await bot.add_cog(BattleMetrics(bot))
+                      ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 17, in __init__
+    self.ban_check_task = self.bot.loop.create_task(self.start_ban_check_loop())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\discord\client.py", line 145, in __getattr__
+    raise AttributeError(msg)
+AttributeError: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+
+2025-02-14 16:23:27,024 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:23:27,025 - INFO - Starting bot...
+2025-02-14 16:23:27,762 - INFO - Slash commands synced with Discord.
+2025-02-14 16:23:30,147 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:25:59,823 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:25:59,824 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:25:59,825 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:25:59,825 - ERROR - Failed to load BattleMetrics extension: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+2025-02-14 16:25:59,827 - ERROR - Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 255, in setup
+    await bot.add_cog(BattleMetrics(bot))
+                      ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 17, in __init__
+    self.ban_check_task = self.bot.loop.create_task(self.start_ban_check_loop())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\discord\client.py", line 145, in __getattr__
+    raise AttributeError(msg)
+AttributeError: loop attribute cannot be accessed in non-async contexts. Consider using either an asynchronous main function and passing it to asyncio.run or using asynchronous initialisation hooks such as Client.setup_hook
+
+2025-02-14 16:25:59,827 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:25:59,827 - INFO - Starting bot...
+2025-02-14 16:26:00,944 - INFO - Slash commands synced with Discord.
+2025-02-14 16:26:03,331 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:28:14,356 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:28:14,357 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:28:14,361 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:28:14,361 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:28:14,361 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:28:14,361 - INFO - Starting bot...
+2025-02-14 16:28:16,547 - INFO - Slash commands synced with Discord.
+2025-02-14 16:28:19,027 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:28:19,028 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:28:19,216 - ERROR - BattleMetrics API error: 401
+2025-02-14 16:28:19,216 - ERROR - Response content: {"errors":[{"status":401,"title":"Unauthorized","detail":"The authentication token provided is invalid or expired."}]}
+2025-02-14 16:29:25,028 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:29:25,028 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:29:25,029 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:29:25,029 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:29:25,029 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:29:25,030 - INFO - Starting bot...
+2025-02-14 16:29:25,748 - INFO - Slash commands synced with Discord.
+2025-02-14 16:29:28,130 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:29:28,131 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:29:28,299 - ERROR - BattleMetrics API error: 400
+2025-02-14 16:29:28,299 - ERROR - Response content: {"errors":[{"keyword":"additionalProperties","dataPath":".filter","schemaPath":"#/properties/filter/additionalProperties","params":{"additionalProperty":"organizationID"},"message":"should NOT have additional properties"}],"meta":{"schema":{"$ref":"battlemetrics#/definitions/ban/links/5/schema"}}}
+2025-02-14 16:32:11,294 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:32:11,295 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:32:11,298 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:32:11,298 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:32:11,298 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:32:11,298 - INFO - Starting bot...
+2025-02-14 16:32:12,417 - INFO - Slash commands synced with Discord.
+2025-02-14 16:32:14,817 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:32:14,817 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:32:15,168 - INFO - API Response Status: 403
+2025-02-14 16:32:15,168 - INFO - API Response Content: {"errors":[{"status":403,"title":"Forbidden","detail":"You are not allowed to do that."}]}
+2025-02-14 16:32:15,168 - ERROR - BattleMetrics API error: 403
+2025-02-14 16:32:15,168 - ERROR - Response content: {"errors":[{"status":403,"title":"Forbidden","detail":"You are not allowed to do that."}]}
+2025-02-14 16:34:13,874 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:34:13,874 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:34:13,878 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:34:13,878 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:34:13,878 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:34:13,878 - INFO - Starting bot...
+2025-02-14 16:34:14,727 - INFO - Slash commands synced with Discord.
+2025-02-14 16:34:17,114 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:34:17,114 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:34:17,485 - INFO - Full API Response: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:34:17,485 - ERROR - Unexpected API error: 405
+2025-02-14 16:34:17,485 - ERROR - Response content: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:38:00,400 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:38:00,401 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:38:00,405 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:38:00,405 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:38:00,405 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:38:00,405 - INFO - Starting bot...
+2025-02-14 16:38:01,254 - INFO - Slash commands synced with Discord.
+2025-02-14 16:38:03,833 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:38:03,834 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:38:04,205 - INFO - Full API Response: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:38:04,205 - ERROR - 405 Method Not Allowed: Check API endpoint or method.
+2025-02-14 16:38:04,205 - ERROR - 405 Error: Potential API Method Issue.
+2025-02-14 16:38:04,205 - INFO - Checking for API documentation updates or potential token misconfiguration...
+2025-02-14 16:38:04,567 - ERROR - Token validation failed. Status: 405
+2025-02-14 16:38:04,568 - ERROR - Error validating token: Connection closed
+2025-02-14 16:38:04,588 - ERROR - Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\battlemetrics.py", line 164, in validate_battlemetrics_token
+    logger.error(f"Response content: {await user_response.text()}")
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiohttp\client_reqrep.py", line 1260, in text
+    await self.read()
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiohttp\client_reqrep.py", line 1218, in read
+    self._body = await self.content.read()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Dannick\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\aiohttp\streams.py", line 392, in read
+    raise self._exception
+aiohttp.client_exceptions.ClientConnectionError: Connection closed
+
+2025-02-14 16:38:04,589 - ERROR - Token validation failed. API token is likely incorrect or expired.
+2025-02-14 16:39:17,833 - INFO - Full API Response: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:39:17,833 - ERROR - Unexpected API error: 405
+2025-02-14 16:39:17,833 - ERROR - Response content: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:40:42,808 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:40:42,809 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:40:42,812 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:40:42,812 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:40:42,812 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:40:42,812 - INFO - Starting bot...
+2025-02-14 16:40:43,738 - INFO - Slash commands synced with Discord.
+2025-02-14 16:40:46,268 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:40:46,268 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:40:46,648 - INFO - Full API Response: {"errors":[{"status":"405","title":"POST is not allowed"}]}
+2025-02-14 16:40:46,648 - ERROR - 405 Method Not Allowed: Invalid request method for the given endpoint.
+2025-02-14 16:40:46,649 - INFO - Check API documentation for the correct method (e.g., POST instead of GET).
+2025-02-14 16:43:36,882 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:43:36,883 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:43:36,884 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:43:36,885 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:43:36,885 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:43:36,885 - INFO - Starting bot...
+2025-02-14 16:43:37,790 - INFO - Slash commands synced with Discord.
+2025-02-14 16:43:40,171 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:43:40,172 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 16:43:40,604 - INFO - Full API Response: {"errors":[{"status":"405","title":"POST is not allowed"}]}
+2025-02-14 16:43:40,604 - ERROR - 405 Method Not Allowed: Invalid request method for the given endpoint.
+2025-02-14 16:43:40,605 - INFO - Check API documentation for the correct method (e.g., POST instead of GET).
+2025-02-14 16:44:18,179 - INFO - Full API Response: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:44:18,179 - ERROR - Unexpected API error: 405
+2025-02-14 16:44:18,179 - ERROR - Response content: {"errors":[{"status":"405","title":"GET is not allowed"}]}
+2025-02-14 16:44:58,151 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 16:44:58,151 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 16:44:58,154 - INFO - BattleMetrics configuration loaded successfully
+2025-02-14 16:44:58,154 - INFO - BattleMetrics extension loaded successfully
+2025-02-14 16:44:58,154 - INFO - Loaded BattleMetrics extension successfully.
+2025-02-14 16:44:58,154 - INFO - Starting bot...
+2025-02-14 16:44:59,047 - INFO - Slash commands synced with Discord.
+2025-02-14 16:45:01,424 - INFO - Starting BattleMetrics ban check loop
+2025-02-14 16:45:01,425 - WARNING - BattleMetrics configuration is incomplete. Skipping ban check.
+2025-02-14 16:45:01,425 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
