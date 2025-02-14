@@ -1,0 +1,16 @@
+[Unit]
+Description=Discord Bot Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/discordbot
+Environment=DISCORD_TOKEN= 
+ExecStart=/usr/bin/python3 /root/discordbot/bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
