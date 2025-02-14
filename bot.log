@@ -1,0 +1,74 @@
+2025-02-14 13:28:01,710 - INFO - BattleMetrics configuration is incomplete
+2025-02-14 13:29:27,470 - ERROR - DISCORD_TOKEN environment variable not set
+2025-02-14 13:31:22,237 - ERROR - DISCORD_TOKEN environment variable not set
+2025-02-14 13:32:06,584 - INFO - Starting bot...
+2025-02-14 13:33:58,746 - INFO - Starting bot...
+2025-02-14 13:34:39,081 - INFO - Starting bot...
+2025-02-14 13:34:41,994 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:35:15,356 - INFO - Starting bot...
+2025-02-14 13:35:18,240 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:41:30,247 - INFO - Loaded owner_commands cog successfully.
+2025-02-14 13:41:30,247 - INFO - Starting bot...
+2025-02-14 13:41:33,144 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:42:12,780 - INFO - Loaded owner_commands cog successfully.
+2025-02-14 13:42:12,780 - INFO - Starting bot...
+2025-02-14 13:42:15,891 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:42:52,600 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:42:52,600 - INFO - Starting bot...
+2025-02-14 13:42:55,456 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:44:07,160 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:44:07,161 - INFO - Starting bot...
+2025-02-14 13:44:08,044 - INFO - Slash commands synced with Discord.
+2025-02-14 13:44:11,142 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:44:11,142 - INFO - Starting bot...
+2025-02-14 13:44:24,900 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:44:24,900 - INFO - Starting bot...
+2025-02-14 13:45:37,949 - INFO - Slash commands synced with Discord.
+2025-02-14 13:45:40,375 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:46:26,649 - ERROR - Failed to load extension: Extension 'commands.owner_commands' raised an error: CommandAlreadyRegistered: Command 'setowner' already registered.
+2025-02-14 13:47:36,962 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:47:36,962 - INFO - Starting bot...
+2025-02-14 13:47:38,017 - INFO - Slash commands synced with Discord.
+2025-02-14 13:47:40,517 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:48:45,704 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:48:45,704 - INFO - Starting bot...
+2025-02-14 13:48:46,630 - INFO - Slash commands synced with Discord.
+2025-02-14 13:48:49,040 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 13:57:24,098 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 13:57:24,098 - INFO - Starting bot...
+2025-02-14 13:57:24,933 - INFO - Slash commands synced with Discord.
+2025-02-14 13:57:27,299 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 14:01:25,383 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 14:01:25,384 - INFO - Starting bot...
+2025-02-14 14:01:26,282 - INFO - Slash commands synced with Discord.
+2025-02-14 14:01:28,723 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 14:01:55,244 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 14:01:55,245 - INFO - Starting bot...
+2025-02-14 14:01:56,230 - INFO - Slash commands synced with Discord.
+2025-02-14 14:01:58,744 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 14:23:42,958 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 14:23:42,959 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 14:23:42,959 - INFO - Starting bot...
+2025-02-14 14:23:43,976 - INFO - Slash commands synced with Discord.
+2025-02-14 14:23:46,372 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 14:25:59,970 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 14:25:59,972 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 14:25:59,972 - INFO - Starting bot...
+2025-02-14 14:26:00,924 - INFO - Slash commands synced with Discord.
+2025-02-14 14:26:02,552 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 14:26:02,553 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 14:26:02,554 - INFO - Starting bot...
+2025-02-14 14:27:00,908 - INFO - Slash commands synced with Discord.
+2025-02-14 14:27:03,339 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 14:31:38,212 - INFO - Loaded owner_commands extension successfully.
+2025-02-14 14:31:38,214 - INFO - Loaded admin_commands extension successfully.
+2025-02-14 14:31:38,214 - INFO - Starting bot...
+2025-02-14 14:31:39,112 - INFO - Slash commands synced with Discord.
+2025-02-14 14:31:41,535 - INFO - Logged in as Dutch Feniks Admin#1071 (ID: 1335286728851718347)
+2025-02-14 14:31:56,510 - INFO - Attempting to restart service: test
+2025-02-14 14:31:56,510 - ERROR - An error occurred while handling the /restart command
+Traceback (most recent call last):
+  File "C:\Users\Dannick\PycharmProjects\reforger-discord\commands\admin_commands.py", line 50, in restart
+    process = await subprocess.create_subprocess_shell(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'subprocess' has no attribute 'create_subprocess_shell'
