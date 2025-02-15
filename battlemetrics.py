@@ -161,7 +161,7 @@ class BattleMetrics(commands.Cog):
         """Set the BattleMetrics API token."""
         self.config['BATTLEMETRICS_TOKEN'] = token
         self.save_config()
-        await interaction.response.send_message("BattleMetrics token updated successfully!")
+        await interaction.response.send_message("BattleMetrics token updated successfully!", empheral=True)
 
     # Slash command to set the server ID
     @app_commands.command(name="set_server_id", description="Set the BattleMetrics server ID.")
