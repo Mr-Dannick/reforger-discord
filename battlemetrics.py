@@ -188,6 +188,7 @@ class BattleMetrics(commands.Cog):
         await self.process_new_bans()
         await interaction.response.send_message("Finished checking bans.")
 
+
     async def setup_hook(self):
         """Register slash commands with Discord."""
         await self.bot.tree.sync()
