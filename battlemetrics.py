@@ -2,330 +2,199 @@ import os
 import json
 import discord
 import aiohttp
-import traceback
 import asyncio
-from discord.ext import commands
-from logger import logger
-from config import CONFIG_FILE
-
-
+from datetime import datetime
+from discord.ext import commands, tasks
+from discord import app_commands
+from logger import logger  # Importing the logger module
+from config import CONFIG_FILE  # Importing the configuration file
 
 
 class BattleMetrics(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = self.load_config()
-        self.ban_check_task = None
+        self.session = None  # aiohttp session for API requests
+        self.auto_check_bans.start()  # Start the periodic task
 
     async def cog_load(self):
-        """Async method to start the ban check loop when the cog is loaded."""
-        self.ban_check_task = asyncio.create_task(self.start_ban_check_loop())
-
-    def load_config(self):
-        """Load configuration from JSON file."""
-        try:
-            if os.path.exists(CONFIG_FILE):
-                with open(CONFIG_FILE, 'r') as f:
-                    config = json.load(f)
-                    logger.info("BattleMetrics configuration loaded successfully")
-                    return config
-            else:
-                logger.warning("BattleMetrics configuration file not found. Creating default.")
-                default_config = {
-                    'BATTLEMETRICS_TOKEN': '',
-                    'ORGANIZATION_ID': '',
-                    'DISCORD_BAN_CHANNEL': '',
-                    'LAST_BAN_TIMESTAMP': None
-                }
-                with open(CONFIG_FILE, 'w') as f:
-                    json.dump(default_config, f, indent=4)
-                return default_config
-        except Exception as e:
-            logger.error(f"Error loading BattleMetrics configuration: {e}")
-            logger.error(traceback.format_exc())
-            return {}
-
-    def save_config(self, updated_config):
-        """Save configuration to JSON file."""
-        try:
-            with open(CONFIG_FILE, 'w') as f:
-                json.dump(updated_config, f, indent=4)
-
-            self.config = updated_config
-            logger.info("BattleMetrics configuration updated successfully")
-            return True
-        except Exception as e:
-            logger.error(f"Error saving BattleMetrics configuration: {e}")
-            logger.error(traceback.format_exc())
-            return False
+        """Async method to initialize on cog load."""
+        logger.info("BattleMetrics cog loaded successfully")
+        self.session = aiohttp.ClientSession()
 
     def cog_unload(self):
-        """Cancel the ban check task when the cog is unloaded."""
-        if self.ban_check_task:
-            self.ban_check_task.cancel()
+        """Cleanup when the cog is unloaded."""
+        self.auto_check_bans.cancel()  # Stop the periodic task
+        asyncio.create_task(self.close_session())
 
-    async def start_ban_check_loop(self):
-        """Wait for bot to be ready, then start periodic ban checks."""
+    async def close_session(self):
+        """Close the aiohttp session."""
+        if self.session:
+            await self.session.close()
+
+    def load_config(self):
+        """Load the configuration for BattleMetrics."""
+        default_config = {
+            'BATTLEMETRICS_TOKEN': None,
+            'SERVER_ID': None,
+            'DISCORD_BAN_CHANNEL': None,
+            'POSTED_BANS': []
+        }
+
+        if os.path.exists(CONFIG_FILE):
+            with open(CONFIG_FILE, 'r') as f:
+                saved_config = json.load(f)
+                default_config.update(saved_config)
+        else:
+            with open(CONFIG_FILE, 'w') as f:
+                json.dump(default_config, f, indent=4)
+
+        logger.info(f"Loaded BattleMetrics config: {default_config}")
+        return default_config
+
+    def save_config(self):
+        """Save the updated configuration."""
+        with open(CONFIG_FILE, 'w') as f:
+            json.dump(self.config, f, indent=4)
+        logger.info("Saved BattleMetrics configuration.")
+
+    async def fetch_bans(self):
+        """Fetch current bans from BattleMetrics API."""
+        if not self.config['BATTLEMETRICS_TOKEN'] or not self.config['SERVER_ID']:
+            logger.error("BattleMetrics configuration is incomplete (missing token or server ID).")
+            return None
+
+        headers = {
+            'Authorization': f"Bearer {self.config['BATTLEMETRICS_TOKEN']}",
+            'Accept': 'application/json'
+        }
+
+        try:
+            url = "https://api.battlemetrics.com/bans"
+            params = {
+                'filter[server]': self.config['SERVER_ID'],
+                'filter[expired]': 'false',
+                'include': 'user,server'
+            }
+
+            async with self.session.get(url, headers=headers, params=params) as response:
+                if response.status == 200:
+                    return await response.json()
+                else:
+                    logger.error(f"Failed to fetch bans: {response.status} - {await response.text()}")
+                    return None
+        except Exception as e:
+            logger.error(f"Error fetching bans: {str(e)}")
+            return None
+
+    async def process_new_bans(self):
+        """Fetch and process BattleMetrics bans."""
+        if not self.config['DISCORD_BAN_CHANNEL']:
+            logger.error("Discord ban channel is not set in the configuration.")
+            return
+
+        bans_channel = self.bot.get_channel(int(self.config['DISCORD_BAN_CHANNEL']))
+        if not bans_channel:
+            logger.error("Failed to find the Discord ban channel.")
+            return
+
+        # Fetch bans from the API
+        bans_data = await self.fetch_bans()
+        if not bans_data or 'data' not in bans_data:
+            logger.info("No bans data found.")
+            return
+
+        for ban in bans_data['data']:
+            ban_id = ban.get('id')
+            if ban_id in self.config['POSTED_BANS']:
+                continue  # Skip already posted bans
+
+            attributes = ban.get('attributes', {})
+            reason = attributes.get('reason', 'No reason provided')
+            expires = attributes.get('expires', None)
+
+            # Get identifier
+            identifier = 'Unknown'
+            identifiers = attributes.get('identifiers', [])
+            for id_entry in identifiers:
+                if id_entry.get('type') == 'name':
+                    identifier = id_entry.get('identifier')
+                    break
+
+            # Ban expiration information
+            if expires:
+                expires_dt = datetime.fromisoformat(expires.replace('Z', '+00:00'))
+                expires_str = expires_dt.strftime("%Y-%m-%d %H:%M UTC")
+            else:
+                expires_str = "Permanent"
+
+            ban_message = (
+                "🚫 **New Ban**\n"
+                f"**Player**: {identifier}\n"
+                f"**Reason**: {reason}\n"
+                f"**Expires**: {expires_str}"
+            )
+
+            # Post the ban message to Discord
+            await bans_channel.send(ban_message)
+
+            # Add the ban ID to the posted list and save config
+            self.config['POSTED_BANS'].append(ban_id)
+            self.save_config()
+
+            logger.info(f"Posted new ban: {identifier}")
+
+    # Periodic task to check for bans automatically
+    @tasks.loop(minutes=1)  # Runs every 1 minutes
+    async def auto_check_bans(self):
+        logger.info("Automatically checking for new bans...")  # For debugging purposes
+        await self.process_new_bans()
+
+    @auto_check_bans.before_loop
+    async def before_auto_check_bans(self):
+        """Wait until the bot is fully ready before starting the task."""
         await self.bot.wait_until_ready()
-        logger.info("Starting BattleMetrics ban check loop")
 
-        while True:
-            try:
-                await self.check_battlemetrics_bans()
-                await asyncio.sleep(60)  # Check every 1 minutes
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in ban check loop: {e}")
-                logger.error(traceback.format_exc())
-                await asyncio.sleep(60)
+    # Slash command to set the BattleMetrics API token
+    @app_commands.command(name="set_bm_token", description="Set the BattleMetrics API token.")
+    async def set_bm_token(self, interaction: discord.Interaction, token: str):
+        """Set the BattleMetrics API token."""
+        self.config['BATTLEMETRICS_TOKEN'] = token
+        self.save_config()
+        await interaction.response.send_message("BattleMetrics token updated successfully!")
 
-    async def check_battlemetrics_bans(self):
-        """Periodically check for new bans in the organization."""
-        if not (self.config.get('BATTLEMETRICS_TOKEN') and
-                self.config.get('SERVER_ID') and
-                self.config.get('DISCORD_BAN_CHANNEL')):
-            logger.warning("BattleMetrics configuration is incomplete. Skipping ban check.")
-            return
+    # Slash command to set the server ID
+    @app_commands.command(name="set_server_id", description="Set the BattleMetrics server ID.")
+    async def set_server_id(self, interaction: discord.Interaction, server_id: str):
+        """Set the BattleMetrics server ID."""
+        self.config['SERVER_ID'] = server_id
+        self.save_config()
+        await interaction.response.send_message(f"BattleMetrics Server ID set to: {server_id}")
 
-        try:
-            async with aiohttp.ClientSession() as session:
-                headers = {
-                    "Authorization": f"Bearer {self.config['BATTLEMETRICS_TOKEN']}",
-                    "Accept": "application/json"
-                }
+    # Slash command to set the ban channel
+    @app_commands.command(name="set_ban_channel", description="Set the channel for ban notifications.")
+    async def set_ban_channel(
+            self, interaction: discord.Interaction, channel: discord.TextChannel
+    ):
+        """Set the channel for ban notifications."""
+        self.config['DISCORD_BAN_CHANNEL'] = str(channel.id)
+        self.save_config()
+        await interaction.response.send_message(f"Ban notifications will now be sent to {channel.mention}.")
 
-                # Correct endpoint and parameters (GET method)
-                url = "https://api.battlemetrics.com/bans"
-                params = {
-                    "filter[server]": self.config['SERVER_ID'],
-                    "filter[expired]": "false",
-                    "include": "user,server"
-                }
+    # Slash command to manually check bans
+    @app_commands.command(name="check_bans", description="Manually check and post new bans.")
+    async def check_bans(self, interaction: discord.Interaction):
+        """Manually check and post new bans."""
+        await self.process_new_bans()
+        await interaction.response.send_message("Finished checking bans.")
 
-                async with session.get(url, headers=headers, params=params) as response:
-                    response_text = await response.text()
-                    logger.info(f"Full API Response: {response_text}")
-
-                    if response.status == 403:
-                        logger.error("Access Forbidden - Check token or permissions.")
-                        await self.validate_battlemetrics_token()
-                        return
-
-                    if response.status == 405:
-                        logger.error("405 Method Not Allowed: Invalid request method for the given endpoint.")
-                        logger.info("Ensure the request is using the correct HTTP method (GET).")
-                        return
-
-                    if response.status != 200:
-                        logger.error(f"Unexpected API error. Status: {response.status}")
-                        logger.error(f"Response content: {response_text}")
-                        return
-
-                    data = await response.json()
-                    await self.process_new_bans(data)
-
-        except Exception as e:
-            logger.error(f"Unexpected error checking BattleMetrics bans: {e}")
-            logger.error(traceback.format_exc())
-
-    async def validate_battlemetrics_token(self):
-        """Validate the BattleMetrics API token."""
-        try:
-            async with aiohttp.ClientSession() as session:
-                headers = {
-                    "Authorization": f"Bearer {self.config['BATTLEMETRICS_TOKEN']}",
-                    "Accept": "application/json",
-                    "User-Agent": "DiscordBanMonitorBot/1.0"
-                }
-
-                # Lightweight endpoint for validation as an alternative
-                url = "https://api.battlemetrics.com/ping"
-
-                async with session.get(url, headers=headers) as response:
-                    if response.status == 200:
-                        logger.info("BattleMetrics API token validated successfully.")
-                        return True
-
-                    logger.error(f"Token validation failed. Status: {response.status}")
-                    logger.error(f"Response content: {await response.text()}")
-                    return False
-        except Exception as e:
-            logger.error(f"Error validating token: {e}")
-            logger.error(traceback.format_exc())
-            return False
-
-    async def process_new_bans(self, ban_data):
-        """Process and post new bans to Discord."""
-        if not ban_data.get('data'):
-            return
-
-        try:
-            channel = self.bot.get_channel(int(self.config['DISCORD_BAN_CHANNEL']))
-            if not channel:
-                logger.error("Could not find specified Discord channel")
-                return
-        except ValueError:
-            logger.error("Invalid Discord channel ID")
-            return
-
-        most_recent_timestamp = None
-
-        for ban in ban_data['data']:
-            try:
-                attributes = ban.get('attributes', {})
-                timestamp = attributes.get('timestamp')
-                reason = attributes.get('reason', 'No reason provided')
-
-                user_data = ban.get('relationships', {}).get('user', {}).get('data', {})
-                user_id = user_data.get('id')
-                user_name = user_data.get('name', 'Unknown User')
-
-                embed = discord.Embed(
-                    title="🚫 New BattleMetrics Ban",
-                    color=discord.Color.red()
-                )
-                embed.add_field(name="User", value=f"{user_name} (ID: {user_id})", inline=False)
-                embed.add_field(name="Reason", value=reason, inline=False)
-                embed.add_field(name="Banned At", value=timestamp, inline=False)
-
-                await channel.send(embed=embed)
-
-                if not most_recent_timestamp or timestamp > most_recent_timestamp:
-                    most_recent_timestamp = timestamp
-
-            except Exception as e:
-                logger.error(f"Error processing individual ban: {e}")
-                logger.error(traceback.format_exc())
-
-        if most_recent_timestamp:
-            updated_config = self.config.copy()
-            updated_config['LAST_BAN_TIMESTAMP'] = most_recent_timestamp
-            self.save_config(updated_config)
-
-    @commands.command(name="bmconfig")
-    @commands.has_permissions(administrator=True)
-    async def battlemetrics_config(self, ctx):
-        """Create a configuration interface for BattleMetrics settings."""
-        embed = discord.Embed(
-            title="BattleMetrics Configuration",
-            description="Configure BattleMetrics settings using these commands:",
-            color=discord.Color.blue()
-        )
-        embed.add_field(name="Set BattleMetrics Token", value="`!bmtoken <token>`", inline=False)
-        embed.add_field(name="Set Organization ID", value="`!bmorgid <org_id>`", inline=False)
-        embed.add_field(name="Set Ban Notification Channel", value="`!bmchannel #channel`", inline=False)
-
-        await ctx.send(embed=embed)
-
-    @commands.command(name="bmtoken")
-    @commands.has_permissions(administrator=True)
-    async def set_bm_token(self, ctx, token: str):
-        """Set BattleMetrics API token."""
-        updated_config = self.config.copy()
-        updated_config['BATTLEMETRICS_TOKEN'] = token
-        if self.save_config(updated_config):
-            await ctx.send("✅ BattleMetrics Token updated successfully!")
-        else:
-            await ctx.send("❌ Failed to update BattleMetrics Token.")
-
-    @commands.command(name="bmorgid")
-    @commands.has_permissions(administrator=True)
-    async def set_org_id(self, ctx, org_id: str):
-        """Set BattleMetrics Organization ID."""
-        updated_config = self.config.copy()
-        updated_config['ORGANIZATION_ID'] = org_id
-        if self.save_config(updated_config):
-            await ctx.send("✅ Organization ID updated successfully!")
-        else:
-            await ctx.send("❌ Failed to update Organization ID.")
-
-    @commands.command(name="bmchannel")
-    @commands.has_permissions(administrator=True)
-    async def set_ban_channel(self, ctx, channel: discord.TextChannel):
-        """Set Discord channel for ban notifications."""
-        updated_config = self.config.copy()
-        updated_config['DISCORD_BAN_CHANNEL'] = str(channel.id)
-        if self.save_config(updated_config):
-            await ctx.send(f"✅ Ban notification channel set to {channel.mention}!")
-        else:
-            await ctx.send("❌ Failed to update ban notification channel.")
-
-    @commands.command(name="bmtest")
-    @commands.has_permissions(administrator=True)
-    async def battlemetrics_test(self, ctx):
-        """Test the current BattleMetrics configuration."""
-        config = self.config
-
-        embed = discord.Embed(
-            title="BattleMetrics Configuration Test",
-            color=discord.Color.blue()
-        )
-
-        embed.add_field(
-            name="BattleMetrics Token",
-            value="✅ Configured" if config.get('BATTLEMETRICS_TOKEN') else "❌ Not Set",
-            inline=False
-        )
-        embed.add_field(
-            name="Organization ID",
-            value="✅ Configured" if config.get('ORGANIZATION_ID') else "❌ Not Set",
-            inline=False
-        )
-        embed.add_field(
-            name="Discord Ban Channel",
-            value=f"✅ {config.get('DISCORD_BAN_CHANNEL')}" if config.get('DISCORD_BAN_CHANNEL') else "❌ Not Set",
-            inline=False
-        )
-
-        await ctx.send(embed=embed)
-
-    @commands.command(name="bmvalidate")
-    @commands.has_permissions(administrator=True)
-    async def validate_token(self, ctx):
-        """Validate the current BattleMetrics token."""
-        is_valid = await self.validate_battlemetrics_token()
-        if is_valid:
-            await ctx.send("✅ BattleMetrics API token is valid!")
-        else:
-            await ctx.send("❌ BattleMetrics API token is invalid. Please update your token.")
-
-    @commands.command(name="bmdiagnose")
-    @commands.has_permissions(administrator=True)
-    async def diagnose_battlemetrics(self, ctx):
-        """Comprehensive BattleMetrics configuration diagnosis."""
-        await ctx.send("Running comprehensive BattleMetrics diagnostics...")
-
-        embed = discord.Embed(title="BattleMetrics Diagnostics", color=discord.Color.orange())
-
-        # Token validation
-        token_valid = await self.validate_battlemetrics_token()
-        embed.add_field(
-            name="Token Validation",
-            value="✅ Valid" if token_valid else "❌ Invalid",
-            inline=False
-        )
-
-        # Configuration check
-        config_complete = all([
-            self.config.get('BATTLEMETRICS_TOKEN'),
-            self.config.get('ORGANIZATION_ID'),
-            self.config.get('DISCORD_BAN_CHANNEL')
-        ])
-        embed.add_field(
-            name="Configuration",
-            value="✅ Complete" if config_complete else "❌ Incomplete",
-            inline=False
-        )
-
-        await ctx.send(embed=embed)
+    async def setup_hook(self):
+        """Register slash commands with Discord."""
+        await self.bot.tree.sync()
+        logger.info("Slash commands for BattleMetrics synced successfully.")
 
 
+# Setup function for the cog
 async def setup(bot):
-    """Setup function for the BattleMetrics extension."""
-    try:
-        await bot.add_cog(BattleMetrics(bot))
-        logger.info("BattleMetrics extension loaded successfully")
-    except Exception as e:
-        logger.error(f"Failed to load BattleMetrics extension: {e}")
-        logger.error(traceback.format_exc())
+    """Setup function for the BattleMetrics cog."""
+    await bot.add_cog(BattleMetrics(bot))
