@@ -43,6 +43,8 @@ async def main():
         logger.info("Loaded admin_commands extension successfully.")
         await bot.load_extension("battlemetrics")
         logger.info("Loaded BattleMetrics extension successfully.")
+        await bot.load_extension("commands.performance")
+        logger.info("Loaded performance extension successfully.")
     except Exception as e:
         logger.error(f"Failed to load extension: {e}")
         raise

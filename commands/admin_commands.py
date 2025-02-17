@@ -5,7 +5,7 @@ import subprocess
 import json
 from logger import logger
 from config import SERVICE_NAME  # Import SERVICE_NAME from config.py
-import config
+from config import CONFIG_FILE
 
 
 class AdminCommands(commands.Cog):
