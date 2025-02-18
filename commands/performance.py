@@ -17,117 +17,110 @@ class Performance(commands.Cog):
         self.stats_channel_id = None
         self.last_message_id = None
         self.current_players = 0
-        self.monitor_tmux.start()  # Start the monitoring task
+
+        # Load the stats_channel_id from the configuration file
+        self.load_configuration()
+
+        # Start the monitoring loop
+        self.monitor_tmux.start()
 
     def cog_unload(self):
         """Cleanup when cog is unloaded."""
         self.monitor_tmux.cancel()
 
+    def load_configuration(self):
+        """Load stats_channel_id and other configurations."""
+        if os.path.exists(config.CONFIG_FILE):
+            try:
+                with open(config.CONFIG_FILE, "r") as config_file:
+                    configuration = json.load(config_file)
+                    self.stats_channel_id = configuration.get("stats_channel", None)
+                    if self.stats_channel_id:
+                        logger.info(f"[Performance] Loaded stats_channel_id: {self.stats_channel_id}")
+                    else:
+                        logger.warning("[Performance] stats_channel_id not set in the configuration.")
+            except json.JSONDecodeError:
+                logger.error("[Performance] Configuration file is invalid or corrupted.")
+            except Exception as e:
+                logger.error(f"[Performance] Unexpected error loading configuration: {e}")
+        else:
+            logger.warning("[Performance] Configuration file not found.")
+
     @app_commands.command(name="set_stats_channel", description="Set the statistics channel.")
     async def set_stats_channel(self, interaction: discord.Interaction, channel: discord.TextChannel):
-        try:
-            # Step 1: Defer the response
-            await interaction.response.defer(ephemeral=True)
+        """Command to set the statistics channel and save it to the configuration."""
+        await interaction.response.defer(ephemeral=True)
 
-            # Step 2: Check if the configuration file exists
+        try:
             if not os.path.exists(config.CONFIG_FILE):
-                error_message = "The configuration file could not be found."
-                logger.error(f"[set_stats_channel] {error_message}")
-                await interaction.followup.send(error_message, ephemeral=True)
+                await interaction.followup.send("Configuration file not found.", ephemeral=True)
+                logger.error("[set_stats_channel] Configuration file not found.")
                 return
 
-            # Step 3: Load the configuration file
             try:
                 with open(config.CONFIG_FILE, "r") as config_file:
                     configuration = json.load(config_file)
             except json.JSONDecodeError:
-                error_message = "Configuration file is invalid or corrupted."
-                logger.error(f"[set_stats_channel] {error_message}")
-                await interaction.followup.send(error_message, ephemeral=True)
+                await interaction.followup.send("Configuration file is corrupted.", ephemeral=True)
+                logger.error("[set_stats_channel] Configuration file is invalid.")
                 return
 
-            # Step 4: Verify admin role is correctly set up
             admin_role_id = configuration.get("admin_role")
-            if not admin_role_id:
-                error_message = "Admin role ID is missing in the configuration."
-                logger.error(f"[set_stats_channel] {error_message}")
-                await interaction.followup.send(error_message, ephemeral=True)
+            if not admin_role_id or not any(role.id == admin_role_id for role in interaction.user.roles):
+                await interaction.followup.send("You do not have permission to use this command.", ephemeral=True)
+                logger.warning("[set_stats_channel] User does not have adequate permissions.")
                 return
 
-            # Step 5: Verify the user has the admin role
-            if not any(role.id == admin_role_id for role in interaction.user.roles):
-                error_message = "You do not have permission to use this command."
-                logger.warning(f"[set_stats_channel] Permission denied for user {interaction.user}.")
-                await interaction.followup.send(error_message, ephemeral=True)
-                return
-
-            # Step 6: Validate the channel is accessible
-            if not isinstance(channel, discord.TextChannel):
-                error_message = "The selected channel is not a text channel."
-                logger.error(f"[set_stats_channel] {error_message}")
-                await interaction.followup.send(error_message, ephemeral=True)
-                return
-
-            # Step 7: Update the configuration with the channel ID
             configuration["stats_channel"] = channel.id
             with open(config.CONFIG_FILE, "w") as config_file:
                 json.dump(configuration, config_file, indent=4)
 
-            # Update the cog's channel ID
             self.stats_channel_id = channel.id
-
-            logger.info(f"[set_stats_channel] Channel updated to {channel.name} ({channel.id}) by {interaction.user}.")
-            await interaction.followup.send(
-                f"The statistics channel has been successfully updated to {channel.mention}.",
-                ephemeral=True
-            )
-
-        except discord.Forbidden:
-            error_message = "The bot does not have sufficient permissions to perform this action."
-            logger.error(f"[set_stats_channel] {error_message}")
-            await interaction.followup.send(error_message, ephemeral=True)
+            logger.info(f"[set_stats_channel] Stats channel updated to {channel.name} ({channel.id}).")
+            await interaction.followup.send(f"Statistics channel updated to {channel.mention}.", ephemeral=True)
 
         except Exception as e:
-            error_message = f"An unexpected error occurred: {e}"
-            logger.error(f"[set_stats_channel] {error_message}")
-            await interaction.followup.send(
-                f"An unexpected error occurred while processing the command. Please try again later.",
-                ephemeral=True
-            )
+            logger.error(f"[set_stats_channel] Unexpected error: {e}")
+            await interaction.followup.send("An error occurred while updating the channel.", ephemeral=True)
 
     @tasks.loop(seconds=60)
     async def monitor_tmux(self):
-        """Monitor the TMux session for server performance data."""
+        """Monitor the TMux session for server performance data and post updates."""
         if not self.stats_channel_id:
-            logger.warning("[monitor_tmux] No statistics channel configured.")
+            logger.warning("[monitor_tmux] Statistics channel is not set.")
+            return
+
+        stats_channel = self.bot.get_channel(self.stats_channel_id)
+        if not stats_channel:
+            logger.error(f"[monitor_tmux] Channel with ID {self.stats_channel_id} not found.")
             return
 
         try:
-            stats_channel = self.bot.get_channel(self.stats_channel_id)
-            if not stats_channel:
-                logger.error(f"[monitor_tmux] Could not find channel with ID {self.stats_channel_id}.")
-                return
-
-            # Fetch TMux server performance data
+            # Fetch performance data
             performance_data = self.fetch_tmux_performance_data(config.TMUX_SESSION)
 
             if not performance_data:
-                logger.error("[monitor_tmux] Failed to retrieve performance data.")
+                logger.error("[monitor_tmux] No performance data retrieved.")
                 return
 
-            # Update presence (showing player count)
+            # Log the number of players and FPS detected
+            logger.info(
+                f"[monitor_tmux] Detected Players: {performance_data['players']}, FPS: {performance_data['fps']:.1f}"
+            )
+
+            # Update bot presence if player count changes
             if performance_data['players'] != self.current_players:
                 self.current_players = performance_data['players']
                 await self.update_presence(performance_data['players'])
 
-            # Post the performance statistics
+            # Post or update statistics in the Discord channel
             new_message_id = await self.post_performance_statistics(stats_channel, performance_data,
                                                                     self.last_message_id)
             if new_message_id:
                 self.last_message_id = new_message_id
 
         except Exception as e:
-            logger.error(f"[monitor_tmux] Error occurred: {e}")
+            logger.error(f"[monitor_tmux] Error fetching or posting performance data: {e}")
 
     @monitor_tmux.before_loop
     async def before_monitor_tmux(self):
@@ -135,52 +128,61 @@ class Performance(commands.Cog):
         await self.bot.wait_until_ready()
 
     def fetch_tmux_performance_data(self, session_name):
-        """Parse TMux performance data."""
+        """Fetch and parse TMux session data."""
         try:
             cmd = f"tmux capture-pane -S -1000 -E -1 -t {session_name} -p"
-            output = subprocess.check_output(cmd, shell=True).decode('utf-8')
+            output = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-            fps_lines = [line.strip() for line in output.split('\n') if
-                         line.strip().startswith('DEFAULT') and 'FPS:' in line]
-
-            if fps_lines:
-                latest_fps_line = fps_lines[-1]
-                return self.parse_fps_line(latest_fps_line)
-            else:
-                logger.warning("[fetch_tmux_performance_data] No FPS lines found in TMux output")
+            # Extract only relevant lines
+            fps_lines = [line.strip() for line in output.split("\n") if 'Players connected' in line or 'FPS:' in line]
+            if not fps_lines:
+                logger.warning("[fetch_tmux_performance_data] No relevant output found.")
                 return None
+
+            return self.parse_fps_line(fps_lines)
+
         except subprocess.CalledProcessError as e:
-            logger.error(f"[fetch_tmux_performance_data] Failed to read TMux session: {session_name}")
-            logger.error(f"Error: {str(e)}")
+            logger.error(f"[fetch_tmux_performance_data] TMux session error: {e}")
             return None
         except Exception as e:
-            logger.error(f"[fetch_tmux_performance_data] Error occurred: {str(e)}")
+            logger.error(f"[fetch_tmux_performance_data] Parsing error: {e}")
             return None
 
-    def parse_fps_line(self, line):
-        """Parse the FPS line from TMux output."""
+    def parse_fps_line(self, lines):
+        """Parse performance data (FPS, players, etc.) from TMux output lines."""
         try:
-            fps_match = re.search(r'FPS: ([\d.]+)', line)
-            frame_time_match = re.search(r'frame time \(avg: ([\d.]+) ms, min: ([\d.]+) ms, max: ([\d.]+) ms\)', line)
-            mem_match = re.search(r'Mem: (\d+)', line)
-            ai_match = re.search(r'AI: (\d+)', line)
-            veh_match = re.search(r'Veh: (\d+)\s*\(', line)
+            current_players = 0
+            fps = 0.0
+            frame_time_avg = 0.0
+            frame_time_max = 0.0
 
-            if not fps_match:
-                logger.warning("[parse_fps_line] No FPS match found in line")
-                return None
+            # Loop through relevant lines to extract data
+            for line in lines:
+                # Match FPS
+                fps_match = re.search(r"FPS: ([\d.]+)", line)
+                if fps_match:
+                    fps = float(fps_match.group(1))
+
+                # Match frame times
+                frame_time_match = re.search(r"frame time \(avg: ([\d.]+) ms, .*max: ([\d.]+) ms\)", line)
+                if frame_time_match:
+                    frame_time_avg = float(frame_time_match.group(1))
+                    frame_time_max = float(frame_time_match.group(2))
+
+                # Match player count
+                players_match = re.search(r"Players connected: (\d+)", line)
+                if players_match:
+                    current_players = int(players_match.group(1))
 
             return {
-                'fps': float(fps_match.group(1)),
-                'frame_time_avg': float(frame_time_match.group(1)) if frame_time_match else 0.0,
-                'frame_time_max': float(frame_time_match.group(3)) if frame_time_match else 0.0,
-                'memory': int(mem_match.group(1)) if mem_match else 0,
-                'ai': int(ai_match.group(1)) if ai_match else 0,
-                'vehicles': int(veh_match.group(1)) if veh_match else 0,
-                'players': len(re.findall(r'Players connected: (\d+)', line)),
+                'fps': fps,
+                'frame_time_avg': frame_time_avg,
+                'frame_time_max': frame_time_max,
+                'players': current_players,
             }
+
         except Exception as e:
-            logger.error(f"[parse_fps_line] Error parsing FPS line: {e}")
+            logger.error(f"[parse_fps_line] Error parsing line: {e}")
             return None
 
     async def post_performance_statistics(self, channel, performance_data, last_message_id=None):
@@ -203,30 +205,26 @@ class Performance(commands.Cog):
             return None
 
     def format_performance_message(self, perf_data):
-        """Format the performance data for display."""
+        """Format the performance statistics message."""
         if not perf_data:
-            return "Error parsing server status"
+            return "**Error:** Unable to retrieve server performance data."
 
         return (
             "🖥️ **Server Performance Report**\n"
             f"FPS: **{perf_data['fps']:.1f}** (Avg Frame Time: {perf_data['frame_time_avg']:.1f}ms, "
             f"Max Frame Time: {perf_data['frame_time_max']:.1f}ms)\n"
-            f"Memory: **{perf_data['memory'] // 1024:,} MB**\n\n"
-            "👥 **Server Population**\n"
-            f"Players: **{perf_data['players']}**\n"
-            f"AI Units: **{perf_data['ai']}**\n"
-            f"Vehicles: **{perf_data['vehicles']}**"
+            f"Players Connected: **{perf_data['players']}**"
         )
 
     async def update_presence(self, player_count):
-        """Update the bot's presence with the current player count."""
+        """Update the bot's presence to show the current player count."""
         try:
-            await self.bot.change_presence(activity=discord.Game(name=f"{player_count}/128 Playing"))
-            logger.info(f"[update_presence] Updated presence to {player_count}/128 Playing")
+            await self.bot.change_presence(activity=discord.Game(name=f"{player_count} Players Connected"))
+            logger.info(f"[update_presence] Updated presence to {player_count} Players Connected.")
         except Exception as e:
-            logger.error(f"[update_presence] Error occurred: {e}")
+            logger.error(f"[update_presence] Failed to update presence: {e}")
 
 
 async def setup(bot):
-    """Entry point for bot to load this cog."""
+    """Cog setup entry point."""
     await bot.add_cog(Performance(bot))
